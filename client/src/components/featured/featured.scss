@@ -1,9 +1,11 @@
+@import "../../app.scss";
+
 .featured {
     height: 90vh;
     position: relative;
 
 
-    .category{
+    .category {
         position: absolute;
         top: 80px;
         left: 50px;
@@ -13,7 +15,7 @@
         display: flex;
         align-items: center;
 
-        select{
+        select {
             cursor: pointer;
             background-color: var(--main-color);
             color: white;
@@ -41,11 +43,16 @@
         flex-direction: column;
 
         img {
-            width: 350px;
+            width: 40vw;
+            margin-top: 100px;
         }
 
         .desc {
             margin: 20px 0px;
+
+            @include mobile {
+                width: 60vw;
+            }
         }
 
         .buttons {

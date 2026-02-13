@@ -1,14 +1,39 @@
 import React from 'react'
 import './featured.scss'
 import { InfoOutlined, PlayArrow } from '@mui/icons-material'
+import axios from 'axios'
+import { useState, useEffect } from 'react'
 
-const Featured = ({ type }) => {
+const Featured = ({ type,setGenre }) => {
+    const [content, setContent] = useState({});
+
+    useEffect(() => {
+        const getRandomContent = async () => {
+            try {
+                const res = await axios.get(`/movies/random?type=${type}`, {
+                    headers: {
+                        token: "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5OGMwNTYyYmI2NGE2ZTIyNmQzY2NlYSIsImlzQWRtaW4iOnRydWUsImlhdCI6MTc3MDc5Mzk1OSwiZXhwIjoxNzcxMjI1OTU5fQ._U9AVibH86CybTkqcVW22HNU0Z5JukozStAifPFuXLI"
+                    }
+                }
+
+                );
+                setContent(res.data[0]);
+            } catch (err) {
+                console.log(err);
+            }
+        };
+        getRandomContent();
+    }, [type]);
+
+    console.log(content)
+
+
     return (
         <div className='featured'>
             {type && (
                 <div className='category'>
                     <span>{type === "movie" ? "Movies" : "Series"}</span>
-                    <select name='genre' id="genre">
+                    <select name='genre' id="genre" onChange={(e) => setGenre(e.target.value)}>
                         <option>Genre</option>
                         <option value="adventure">Adventure</option>
                         <option value="comedy">Comedy</option>
@@ -27,26 +52,18 @@ const Featured = ({ type }) => {
                 </div>
             )}
             <img
-                src='https://images.pexels.com/photos/10041230/pexels-photo-10041230.jpeg'
+                src={content.img}
                 alt=''
             />
 
             <div className="info">
                 <img
-                    src='https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRnANx3Pzgf8rHdae8ogZlmrqUvE2F-jpcGyg&s'
+                    src={content.imgTitle}
                     alt=''
                 />
 
                 <span className="desc">
-                    Lorem Ipsum is simply dummy text of the printing and
-                    typesetting industry. Lorem Ipsum has been the industry's standard
-                    dummy text ever since the 1500s, when an unknown printer took a galley
-                    of type and scrambled it to make a type specimen book. It has survived
-                    not only five centuries, but also the leap into electronic typesetting,
-                    remaining essentially unchanged. It was popularised in the 1960s with
-                    the release of Letraset sheets containing Lorem Ipsum passages, and more
-                    recently with desktop publishing software like Aldus PageMaker including
-                    versions of Lorem Ipsum.
+                    {content.desc}
                 </span>
 
                 <div className="buttons">
